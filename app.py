@@ -35,25 +35,6 @@ transformer_en_ru.eval()
 transformer_en_ru.to(device)
 
 
-encoder = Encoder(vocab_size=tokenizer_ru_en.vocab_size + 1,
-                  max_len=128,
-                  d_key=16,
-                  d_model=128,
-                  n_heads=8,
-                  n_layers=4,
-                  dropout_prob=0.1)
-decoder = Decoder(vocab_size=tokenizer_ru_en.vocab_size + 1,
-                  max_len=128,
-                  d_key=16,
-                  d_model=128,
-                  n_heads=8,
-                  n_layers=4,
-                  dropout_prob=0.1)
-transformer_ru_en = Transformer(encoder, decoder)
-transformer_ru_en.load_state_dict(torch.load('ru_en_19_epochs.pt',  map_location="cpu"))
-transformer_ru_en.eval()
-transformer_ru_en.to(device)
-
 def translate(input_sentence,model, tokenizer):
   # get encoder output first
     enc_input = tokenizer(input_sentence, return_tensors='pt').to(device)
@@ -102,15 +83,16 @@ option1 = st.selectbox('Which language would you like to translate to',
                        ('English','Russian'))
 
 
-sent = "Enter the text in "+option+" language in the text-area provided below"
+sent = "Enter the text in "+option+" language below"
 
 # setting up the dictionary of languages to their keywords
 if option == 'English' and option1 == 'Russian':
     model = transformer_en_ru
     tokenizer = tokenizer_en_ru
 else:
-    model = transformer_ru_en
-    tokenizer = tokenizer_ru_en
+    st.write("Unfortunately model not available yet. ")
+    #model = transformer_ru_en
+    #tokenizer = tokenizer_ru_en
 
 
 
