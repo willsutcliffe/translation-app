@@ -69,7 +69,7 @@ option1 = st.selectbox('Which language would you like to translate to',
 
 
 sent = "Enter the text in "+option+" language below"
-
+transformer = None
 # setting up the dictionary of languages to their keywords
 if option == 'English' and option1 == 'Russian':
     model_checkpoint = f"Helsinki-NLP/opus-mt-en-ru"
@@ -99,8 +99,8 @@ sentence = st.text_area(sent, height=250)
 if st.button("Translate"):
     if option == option1:
         st.write("Please Select different Language for Translation")
-
+    elif transformer == None:
+        st.write("Right now only English to German or Russian available.")
     else:
-        
         ans = translate(sentence, transformer, tokenizer)[:-4]
         st.write(ans)
