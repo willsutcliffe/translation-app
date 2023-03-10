@@ -3,4 +3,5 @@ streamlit
 torch==1.13.1+cpu
 transformers
 sentencepiece
+scacremoses
 
