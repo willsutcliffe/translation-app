@@ -75,14 +75,21 @@ if option == 'English' and option1 == 'Russian':
     model_checkpoint = f"Helsinki-NLP/opus-mt-en-ru"
     tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
     transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('en-ru-final.pt',  map_location="cpu"))
+    transformer.load_state_dict(torch.load('assets/en-ru-final.pt',  map_location="cpu"))
+    transformer.eval()
+    transformer.to(device)
+elif option == 'Russian' and option1 == 'English':
+    model_checkpoint = f"Helsinki-NLP/opus-mt-ru-en"
+    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
+    transformer = initialize_model(tokenizer)
+    transformer.load_state_dict(torch.load('assets/ru-en-final.pt',  map_location="cpu"))
     transformer.eval()
     transformer.to(device)
 elif option == 'English' and option1 == 'German':
     model_checkpoint = f"Helsinki-NLP/opus-mt-en-de"
     tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
     transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('en-de-final.pt',  map_location="cpu"))
+    transformer.load_state_dict(torch.load('assets/en-de-final.pt',  map_location="cpu"))
     transformer.eval()
     transformer.to(device)
 elif option == option1:
