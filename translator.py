@@ -10,8 +10,9 @@ from transformers import AutoTokenizer
 device = "cpu"
 st.title("Self-trained Transformer Translator")
 
+st.write("""I trained this deep learning translator with the original Transformer architecture from the paper 'Attention 
+         is all you need'. Click on hftranslator to use a pre-trained Huggingface translation model with more languages.""")
 def initialize_model(tokenizer):
-
     encoder = Encoder(vocab_size=tokenizer.vocab_size + 1,
                       max_len=60,
                       d_key=64,
@@ -60,7 +61,6 @@ def translate(input_sentence,model, tokenizer):
 
 
 # setting up the dropdown list of the languages
-
 
 option = st.selectbox(
     'Which language would you choose to type',
