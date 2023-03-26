@@ -10,12 +10,14 @@ st.title("Huggingface Translator")
 
 # setting up the dropdown list of the languages
 
+st.write("""This translator use pre-trained This translator use pre-trained models from Huggingface Helsinki-NLP/opus-mt-X-Y.
+         The models must first be downloaded hence the delay.""")
 option1 = st.selectbox(
     'Which language would you choose to type',
-    ('English', 'Russian', 'German', 'French', 'Spanish', 'Japanese'))
+    ('English', 'Russian', 'German', 'French', 'Spanish', 'Japanese', 'Chinese'))
 
 option2 = st.selectbox('Which language would you like to translate to',
-                       ('German','English','Russian','German', 'French', 'Spanish', 'Japanese'))
+                       ('German','English','Russian','German', 'French', 'Spanish', 'Japanese', 'Chinese'))
 
 sent = "Enter the text in the "+option1 +" language below"
 
@@ -28,7 +30,8 @@ langmap = { 'English' : 'en',
             'French'  :  'fr',
             'German'  : 'de',
             'Spanish' : 'es',
-            'Japanese': 'jap'}
+            'Japanese': 'jap',
+            'Chinese' : 'zh'}
 
 lang1 = langmap[option1]
 lang2 = langmap[option2]

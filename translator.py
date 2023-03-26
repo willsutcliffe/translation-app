@@ -62,74 +62,45 @@ def translate(input_sentence,model, tokenizer):
 
 # setting up the dropdown list of the languages
 
-option = st.selectbox(
+option1 = st.selectbox(
     'Which language would you choose to type',
     ('English', 'Russian', 'German', 'French'))
 
-option1 = st.selectbox('Which language would you like to translate to',
+option2 = st.selectbox('Which language would you like to translate to',
                        ('English','Russian', 'German', 'French'))
 
+langmap = { 'English' : 'en',
+            'Russian' :  'ru',
+            'French'  :  'fr',
+            'German'  : 'de'
+           }
 
-sent = "Enter the text in the "+option+" language below"
-transformer = None
-# setting up the dictionary of languages to their keywords
-if option == 'English' and option1 == 'Russian':
-    model_checkpoint = f"Helsinki-NLP/opus-mt-en-ru"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
-    transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('assets/en-ru-final.pt',  map_location="cpu"))
-    transformer.eval()
-    transformer.to(device)
-elif option == 'Russian' and option1 == 'English':
-    model_checkpoint = f"Helsinki-NLP/opus-mt-ru-en"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
-    transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('assets/ru-en-final.pt',  map_location="cpu"))
-    transformer.eval()
-    transformer.to(device)
-elif option == 'English' and option1 == 'German':
-    model_checkpoint = f"Helsinki-NLP/opus-mt-en-de"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
-    transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('assets/en-de-final.pt',  map_location="cpu"))
-    transformer.eval()
-    transformer.to(device)
-if option == 'German' and option1 == 'English':
-    model_checkpoint = f"Helsinki-NLP/opus-mt-de-en"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
-    transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('assets/de-en-final.pt',  map_location="cpu"))
-    transformer.eval()
-    transformer.to(device)
-elif option == 'English' and option1 == 'French':
-    model_checkpoint = f"Helsinki-NLP/opus-mt-en-fr"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
-    transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('assets/en-fr-final.pt',  map_location="cpu"))
-    transformer.eval()
-    transformer.to(device)
-elif option == 'French' and option1 == 'English':
-    model_checkpoint = f"Helsinki-NLP/opus-mt-fr-en"
-    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
-    transformer = initialize_model(tokenizer)
-    transformer.load_state_dict(torch.load('assets/fr-en-final.pt',  map_location="cpu"))
-    transformer.eval()
-    transformer.to(device)
-elif option == option1:
+lang1 = langmap[option1]
+lang2 = langmap[option2]
+
+
+sent = "Enter the text in the "+option1+" language below"
+
+if option1 == option2:
     st.write("Choose a language pair please.")
-    #model = transformer_ru_en
-    #tokenizer = tokenizer_ru_en
-
-
+else:
+    model_checkpoint = f"Helsinki-NLP/opus-mt-{lang1}-{lang2}"
+    torch_model = f"assets/{lang1}-{lang2}-final.pt"
+    transformer = None
+    # setting up the dictionary of languages to their keywords
+    tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, device = device)
+    transformer = initialize_model(tokenizer)
+    transformer.load_state_dict(torch.load(torch_model,  map_location="cpu"))
+    transformer.eval()
+    transformer.to(device)
 
 sentence = st.text_area(sent, height=250)
 
 if st.button("Translate"):
-    if option == option1:
+    if option1 == option2:
         st.write("Please Select different language for translation")
     elif transformer == None:
         st.write("Right now one language must be English.")
     else:
         ans = translate(sentence, transformer, tokenizer)[:-4]
         st.write(ans)
-        st.write("Please also try the hugging face pre-trained translator for better accuracy.")
