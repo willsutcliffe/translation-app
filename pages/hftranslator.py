@@ -38,7 +38,7 @@ lang2 = langmap[option2]
 
 if option1 != option2:
     translator = pipeline("translation",
-                      model=f'Helsinki-NLP/opus-mt-{lang1}-{lang2}', device=0)
+                      model=f'Helsinki-NLP/opus-mt-{lang1}-{lang2}', device='cpu')
 
 
 if st.button("Translate"):
